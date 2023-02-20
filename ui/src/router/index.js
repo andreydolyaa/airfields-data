@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Map from "../views/map/Map.vue";
+import MapView from "../views/map/MapView.vue";
 
 Vue.use(VueRouter)
 
@@ -8,7 +8,7 @@ const routes = [
   {
     path: '/',
     name: 'map',
-    component: Map
+    component: MapView
   }
 ]
 
