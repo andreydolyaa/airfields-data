@@ -66,10 +66,11 @@ export default {
         }),
       });
       Vue.prototype.$map = map;
-      this.initMapClick();
+      this.initMapClick(map);
+      this.initPointerMove(map);
     },
-    initMapClick() {
-      this.$map.on("click", (e) => {
+    initMapClick(map) {
+      map.on("click", (e) => {
         this.vectorLayer()
           .getFeatures(e.pixel)
           .then((clickedFeatures) => {
@@ -79,12 +80,17 @@ export default {
                 const extent = boundingExtent(
                   features.map((r) => r.getGeometry().getCoordinates())
                 );
-                this.$map
-                  .getView()
-                  .fit(extent, { duration: 1000, padding: [50, 50, 50, 50] });
+                map.getView().fit(extent, { duration: 1000, padding: [50, 50, 50, 50] });
               }
             }
           });
+      });
+    },
+    initPointerMove(map) {
+      map.on("pointermove", function (e) {
+        var pixel = map.getEventPixel(e.originalEvent);
+        var hit = map.hasFeatureAtPixel(pixel);
+        map.getViewport().style.cursor = hit ? "pointer" : "";
       });
     },
     vectorLayer() {
